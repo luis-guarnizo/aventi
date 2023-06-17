@@ -7,16 +7,12 @@
         </div>
         <div class="pull-right">
             @can('user-create')
-            <a class="btn btn-success" href="{{ route('users.create') }}"> Create New User</a>
+            <a class="btn btn-success" href="{{ route('users.create') }}">Create New User</a>
             @endcan
         </div>
     </div>
 </div>
-@if ($message = Session::get('success'))
-<div class="alert alert-success">
-    <p>{{ $message }}</p>
-</div>
-@endif
+
 <table class="table table-bordered">
     <tr>
         <th>No</th>
@@ -26,9 +22,10 @@
         <th width="280px">Action</th>
     </tr>
 @can('user-edit')
+
 @foreach ($data as $key => $user)
     <tr>
-        <td>{{ ++$i }}</td>
+        <td>{{ $user->id }}</td>
         <td>{{ $user->name }}</td>
         <td>{{ $user->email }}</td>
         <td>
@@ -41,11 +38,12 @@
         <td>
             <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
             <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
-                @can('user-delete')
-                {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
-                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                {!! Form::close() !!}
-                @endcan
+
+            @can('user-delete')
+            {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
+                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+            {!! Form::close() !!}
+            @endcan
         </td>
     </tr>
 @endforeach
@@ -54,7 +52,7 @@
 @can('user-edit-yourself')
 @foreach ($data as $key => $user)
     @if (Auth::user()->name == $user->name )
-    <h1>{{Auth::user()->name}}</h1>
+
     <tr>
         <td>{{ ++$i }}</td>
         <td>{{ $user->name }}</td>
@@ -69,11 +67,6 @@
         <td>
             <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
             <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
-                @can('user-delete')
-                {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
-                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                {!! Form::close() !!}
-                @endcan
         </td>
     </tr>
     @endif

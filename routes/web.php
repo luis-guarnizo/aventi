@@ -6,6 +6,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +21,7 @@ use App\Http\Controllers\ProductController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Auth::routes();
@@ -31,3 +33,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', UserController::class);
     Route::resource('products', ProductController::class);
 });
+
+Route::get('/dashboard1', [CartController::class, 'index']);
+Route::get('/shopping-cart', [CartController::class, 'productCart'])->name('shopping.cart');
+Route::get('/product/{id}', [CartController::class, 'addProducttoCart'])->name('addproduct.to.cart');
+Route::patch('/update-shopping-cart', [CartController::class, 'updateCart'])->name('update.shopping.cart');
+Route::delete('/delete-cart-product', [CartController::class, 'deleteProduct'])->name('delete.cart.product');
